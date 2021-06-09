@@ -1,11 +1,13 @@
 package com.basicsecurity;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -19,7 +21,10 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -46,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/loginPage");
                     }
                 })
-                .permitAll();
+                .permitAll(); // 해당 경로들 통과
         http.logout()
                 .logoutUrl("/logout") // 로그아웃 처리 URL
                 .logoutSuccessUrl("/login") // 로그아웃 성공 후 이동페이지
@@ -64,7 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/login");
                     }
                 });
-
+        http.rememberMe()
+                .rememberMeParameter("remember") // 기본 파라미터명은 remember-me
+                .tokenValiditySeconds(3600) // Default 14일 (초단위)
+                .alwaysRemember(true) // 기억하기 기능이 활성화되지 않아도 항상 실행 (Default false)
+                .userDetailsService(userDetailsService); // 사용자 계정 조회 (필수)
     }
 
 }
