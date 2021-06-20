@@ -88,6 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidSessionUrl("/invalid") // 세션이 유효하지 않을 때 이동할 페이지
                 .sessionFixation().changeSessionId()  // 기본값 (none), migrateSession, newSession
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // 스프링 시큐리티가 필요 시 생성 (기본값)
+
+        http.csrf().disable();
     }
 
 }
