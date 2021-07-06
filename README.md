@@ -7,3 +7,6 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791.svg?style=flat-square&logo=postgreSQL&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36.svg?style=flat-square&logo=apache-maven&logoColor=white)
 
+## 학습 목차
+
+#### 1. [기본 API & Filter 이해](https://www.notion.so/API-Filter-e8bb057e1a13453e8e088ebc59fc8bd0)
