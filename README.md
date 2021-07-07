@@ -10,3 +10,4 @@
 ## 학습 목차
 
 #### 1. [기본 API & Filter 이해](https://www.notion.so/API-Filter-e8bb057e1a13453e8e088ebc59fc8bd0)
+#### 2. [주요 아키텍처 이해](https://www.notion.so/b2e066f1bd78497385ccf2f6f58713fc)
