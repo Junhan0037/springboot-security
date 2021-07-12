@@ -1,15 +1,13 @@
 package com.springcoresecurity.controller.admin;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AdminController {
+public class ConfigController {
 
-    @GetMapping(value="/admin")
-    public String home() throws Exception {
-        return "admin/home";
+    @GetMapping("/config")
+    public String config(){
+        return "admin/config";
     }
-
 }

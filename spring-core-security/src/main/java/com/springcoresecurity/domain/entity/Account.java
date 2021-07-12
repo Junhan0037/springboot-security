@@ -2,21 +2,22 @@ package com.springcoresecurity.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
-@ToString(exclude = {"userROles"})
+@ToString(exclude = {"userRoles"})
+@Builder
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Account {
+public class Account implements Serializable {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Column
@@ -31,4 +32,10 @@ public class Account {
     @Column
     private String password;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinTable(name = "account_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id") })
+    private Set<com.springcoresecurity.domain.entity.Role> userRoles = new HashSet<>();
 }
+
+
