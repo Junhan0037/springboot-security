@@ -33,8 +33,7 @@ public class Account implements Serializable {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.ALL})
-    @JoinTable(name = "account_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "role_id") })
+    @JoinTable(name = "account_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {@JoinColumn(name = "role_id") })
     private Set<com.springcoresecurity.domain.entity.Role> userRoles = new HashSet<>();
 }
 

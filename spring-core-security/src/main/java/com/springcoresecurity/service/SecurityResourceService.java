@@ -1,8 +1,8 @@
 package com.springcoresecurity.service;
 
-import io.security.corespringsecurity.domain.entity.Resources;
-import io.security.corespringsecurity.repository.AccessIpRepository;
-import io.security.corespringsecurity.repository.ResourcesRepository;
+import com.springcoresecurity.domain.entity.Resources;
+import com.springcoresecurity.repository.AccessIpRepository;
+import com.springcoresecurity.repository.ResourcesRepository;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
