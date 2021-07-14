@@ -1,5 +1,6 @@
 package com.springcoresecurity.security.config;
 
+import com.springcoresecurity.security.authentication.handler.FormAuthenticationFailureHandler;
 import com.springcoresecurity.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.springcoresecurity.security.authentication.provider.FormAuthenticationProvider;
 import com.springcoresecurity.security.authentication.service.FormWebAuthenticationDetailsSource;
@@ -21,10 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
     private final FormAuthenticationProvider authenticationProvider;
     private final FormWebAuthenticationDetailsSource authenticationDetailsSource;
     private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
+    private final FormAuthenticationFailureHandler formAuthenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/users", "/user/login/**", "/login**").permitAll()
                 .antMatchers("/mypage").hasRole("USER")
                 .antMatchers("/messages").hasRole("MANAGER")
                 .antMatchers("/config").hasRole("ADMIN")
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationDetailsSource(authenticationDetailsSource)
                 .defaultSuccessUrl("/")
                 .successHandler(formAuthenticationSuccessHandler)
+                .failureHandler(formAuthenticationFailureHandler)
                 .permitAll();
     }
 
