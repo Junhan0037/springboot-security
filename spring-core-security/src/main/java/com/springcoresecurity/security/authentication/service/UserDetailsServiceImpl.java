@@ -1,4 +1,4 @@
-package com.springcoresecurity.security.config.service;
+package com.springcoresecurity.security.authentication.service;
 
 import com.springcoresecurity.domain.entity.Account;
 import com.springcoresecurity.domain.entity.Role;

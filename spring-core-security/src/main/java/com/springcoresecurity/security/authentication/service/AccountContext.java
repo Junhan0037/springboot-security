@@ -1,17 +1,17 @@
-package com.springcoresecurity.security.config.service;
+package com.springcoresecurity.security.authentication.service;
 
 import com.springcoresecurity.domain.entity.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.List;
+import java.util.Collection;
 
 public class AccountContext extends User {
 
     private final Account account;
 
-    public AccountContext(Account account, List<GrantedAuthority> roles) {
-        super(account.getUsername(), account.getPassword(), roles);
+    public AccountContext(Account account, Collection<? extends GrantedAuthority> authorities) {
+        super(account.getUsername(), account.getPassword(), authorities);
         this.account = account;
     }
 
