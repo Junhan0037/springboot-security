@@ -1,5 +1,6 @@
 package com.springcoresecurity.security.config;
 
+import com.springcoresecurity.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.springcoresecurity.security.authentication.provider.FormAuthenticationProvider;
 import com.springcoresecurity.security.authentication.service.FormWebAuthenticationDetailsSource;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final FormAuthenticationProvider authenticationProvider;
     private final FormWebAuthenticationDetailsSource authenticationDetailsSource;
+    private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -31,7 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
         auth.authenticationProvider(authenticationProvider);
     }
 
@@ -54,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login_proc")
                 .authenticationDetailsSource(authenticationDetailsSource)
                 .defaultSuccessUrl("/")
+                .successHandler(formAuthenticationSuccessHandler)
                 .permitAll();
     }
 
