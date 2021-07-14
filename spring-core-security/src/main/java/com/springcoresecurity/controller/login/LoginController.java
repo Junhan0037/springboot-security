@@ -45,9 +45,10 @@ public class LoginController {
 		if (principal instanceof UsernamePasswordAuthenticationToken) {
 			account = (Account) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
-		} else if (principal instanceof AjaxAuthenticationToken){
-			account = (Account) ((AjaxAuthenticationToken) principal).getPrincipal();
 		}
+//		else if (principal instanceof AjaxAuthenticationToken){
+//			account = (Account) ((AjaxAuthenticationToken) principal).getPrincipal();
+//		}
 
 		model.addAttribute("username", account.getUsername());
 		model.addAttribute("exception", exception);

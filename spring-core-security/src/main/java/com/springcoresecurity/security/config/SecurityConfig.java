@@ -1,5 +1,6 @@
 package com.springcoresecurity.security.config;
 
+import com.springcoresecurity.security.authentication.handler.CommonAccessDeniedHandler;
 import com.springcoresecurity.security.authentication.handler.FormAuthenticationFailureHandler;
 import com.springcoresecurity.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.springcoresecurity.security.authentication.provider.FormAuthenticationProvider;
@@ -13,9 +14,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -26,11 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final FormWebAuthenticationDetailsSource authenticationDetailsSource;
     private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
     private final FormAuthenticationFailureHandler formAuthenticationFailureHandler;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -58,7 +54,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .successHandler(formAuthenticationSuccessHandler)
                 .failureHandler(formAuthenticationFailureHandler)
-                .permitAll();
+                .permitAll()
+
+        .and().exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        CommonAccessDeniedHandler accessDeniedHandler = new CommonAccessDeniedHandler();
+        accessDeniedHandler.setErrorPage("/denied");
+        return accessDeniedHandler;
     }
 
 }

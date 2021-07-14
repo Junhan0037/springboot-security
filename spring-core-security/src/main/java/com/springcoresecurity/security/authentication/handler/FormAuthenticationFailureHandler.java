@@ -24,7 +24,7 @@ public class FormAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             errorMessage = "Invalid verificationCode";
         }
 
-        setDefaultFailureUrl("/login?error=true&exception=" + exception.getMessage());
+        setDefaultFailureUrl("/login?error=true&exception=" + errorMessage);
 
         super.onAuthenticationFailure(request, response, exception);
     }
