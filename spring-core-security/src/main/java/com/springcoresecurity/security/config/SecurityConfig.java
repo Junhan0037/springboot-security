@@ -5,6 +5,7 @@ import com.springcoresecurity.security.authentication.handler.FormAuthentication
 import com.springcoresecurity.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.springcoresecurity.security.authentication.provider.FormAuthenticationProvider;
 import com.springcoresecurity.security.authentication.service.FormWebAuthenticationDetailsSource;
+import com.springcoresecurity.security.filter.AjaxLoginProcessingFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -57,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
         .and().exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler());
+                .accessDeniedHandler(accessDeniedHandler())
+
+        .and().addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -70,6 +74,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CommonAccessDeniedHandler accessDeniedHandler = new CommonAccessDeniedHandler();
         accessDeniedHandler.setErrorPage("/denied");
         return accessDeniedHandler;
+    }
+
+    @Bean
+    public AjaxLoginProcessingFilter ajaxLoginProcessingFilter() {
+        return new AjaxLoginProcessingFilter();
     }
 
 }
