@@ -2,6 +2,7 @@ package com.springcoresecurity.security.config;
 
 import com.springcoresecurity.security.authentication.handler.AjaxAuthenticationFailureHandler;
 import com.springcoresecurity.security.authentication.handler.AjaxAuthenticationSuccessHandler;
+import com.springcoresecurity.security.authentication.handler.CommonAccessDeniedHandler;
 import com.springcoresecurity.security.authentication.provider.AjaxAuthenticationProvider;
 import com.springcoresecurity.security.filter.AjaxLoginProcessingFilter;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -34,6 +37,12 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
         http.antMatcher("/api/**")
                 .authorizeRequests()
                 .anyRequest().authenticated()
+
+        .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .accessDeniedPage("/denied")
+                .accessDeniedHandler(accessDeniedHandler())
 
         .and().addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -57,6 +66,11 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new AjaxAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CommonAccessDeniedHandler();
     }
 
 }
